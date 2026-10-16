@@ -1,12 +1,3 @@
-pcall(function()
-    if setclipboard then
-        setclipboard("Proyectados Hub\nhttps://discord.gg/WRJ5RYpq6Z")
-    end
-end)
-
--- ==========================================
--- CONFIGURACIÓN DEL KEY SYSTEM + WHITELIST
--- ==========================================
 local coreGui = game:GetService("CoreGui")
 local players = game:GetService("Players")
 local localPlayer = players.LocalPlayer
