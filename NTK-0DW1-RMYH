@@ -1,0 +1,1760 @@
+-- Cargar WindUI desde su repositorio oficial
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
+
+local coreGui = game:GetService("CoreGui")
+local players = game:GetService("Players")
+local localPlayer = players.LocalPlayer
+
+local correctKey = "california"
+local verified = false
+local keyFileName = "ProyectadosHub_Key.txt"
+
+local whitelistedPlayers = {
+    "juest20017",
+    "andreygamer014",
+    "JKK_000X",
+    "maicolinpinqu",
+    "hoal_mebanearonsoypa",
+    "CLK_DFF",
+    "xxxcrisgamerproxx",
+}
+
+-- 1. Verificar Whitelist
+for _, username in ipairs(whitelistedPlayers) do
+    if localPlayer.Name == username then
+        verified = true
+        break
+    end
+end
+
+-- 2. Verificar Key Guardada
+if not verified then
+    pcall(function()
+        if isfile and readfile and isfile(keyFileName) then
+            local savedKey = readfile(keyFileName)
+            if savedKey == correctKey then
+                verified = true
+            end
+        end
+    end)
+end
+
+-- 3. Mostrar Interfaz de Key si no está verificado
+if not verified then
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "Proyectados Hub Key"
+    screenGui.Parent = coreGui or localPlayer.PlayerGui
+    screenGui.ResetOnSpawn = false
+
+    local mainFrame = Instance.new("Frame")
+    mainFrame.Name = "MainFrame"
+    mainFrame.Size = UDim2.new(0, 380, 0, 290)
+    mainFrame.Position = UDim2.new(0.5, -190, 0.5, -145)
+    mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+    mainFrame.BorderSizePixel = 0
+    mainFrame.Active = true
+    mainFrame.Draggable = true
+    mainFrame.Parent = screenGui
+
+    local uiCorner = Instance.new("UICorner")
+    uiCorner.CornerRadius = UDim.new(0, 10)
+    uiCorner.Parent = mainFrame
+
+    local uiStroke = Instance.new("UIStroke")
+    uiStroke.Color = Color3.fromRGB(138, 43, 226)
+    uiStroke.Thickness = 2
+    uiStroke.Parent = mainFrame
+
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(1, 0, 0, 40)
+    titleLabel.Position = UDim2.new(0, 0, 0, 15)
+    titleLabel.Text = "PROYECTADOS HUB"
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.TextSize = 20
+    titleLabel.Parent = mainFrame
+
+    local subTitle = Instance.new("TextLabel")
+    subTitle.Size = UDim2.new(1, 0, 0, 25)
+    subTitle.Position = UDim2.new(0, 0, 0, 50)
+    subTitle.Text = "Introduce La Key"
+    subTitle.TextColor3 = Color3.fromRGB(180, 180, 180)
+    subTitle.BackgroundTransparency = 1
+    subTitle.Font = Enum.Font.Gotham
+    subTitle.TextSize = 14
+    subTitle.Parent = mainFrame
+
+    local textBox = Instance.new("TextBox")
+    textBox.Size = UDim2.new(0, 320, 0, 42)
+    textBox.Position = UDim2.new(0.5, -160, 0.33, 0)
+    textBox.PlaceholderText = "Escribe La Key aquí..."
+    textBox.Text = ""
+    textBox.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
+    textBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    textBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+    textBox.Font = Enum.Font.Gotham
+    textBox.TextSize = 15
+    textBox.Parent = mainFrame
+
+    local tbCorner = Instance.new("UICorner")
+    tbCorner.CornerRadius = UDim.new(0, 8)
+    tbCorner.Parent = textBox
+
+    local submitButton = Instance.new("TextButton")
+    submitButton.Size = UDim2.new(0, 320, 0, 42)
+    submitButton.Position = UDim2.new(0.5, -160, 0.53, 0)
+    submitButton.Text = "Verificar Key"
+    submitButton.BackgroundColor3 = Color3.fromRGB(138, 43, 226)
+    submitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    submitButton.Font = Enum.Font.GothamBold
+    submitButton.TextSize = 15
+    submitButton.Parent = mainFrame
+
+    local btnCorner = Instance.new("UICorner")
+    btnCorner.CornerRadius = UDim.new(0, 8)
+    btnCorner.Parent = submitButton
+
+    local discordButton = Instance.new("TextButton")
+    discordButton.Size = UDim2.new(0, 320, 0, 42)
+    discordButton.Position = UDim2.new(0.5, -160, 0.73, 0)
+    discordButton.Text = "DISCORD"
+    discordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+    discordButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    discordButton.Font = Enum.Font.GothamBold
+    discordButton.TextSize = 14
+    discordButton.Parent = mainFrame
+
+    local discordCorner = Instance.new("UICorner")
+    discordCorner.CornerRadius = UDim.new(0, 8)
+    discordCorner.Parent = discordButton
+
+    discordButton.MouseButton1Click:Connect(function()
+        pcall(function()
+            if setclipboard then
+                setclipboard("https://discord.gg/WRJ5RYpq6Z")
+            end
+        end)
+        discordButton.Text = "Link copiado al portapapeles"
+        task.wait(2)
+        discordButton.Text = "DISCORD"
+    end)
+
+    submitButton.MouseButton1Click:Connect(function()
+        if textBox.Text == correctKey then
+            verified = true
+            pcall(function()
+                if writefile then
+                    writefile(keyFileName, correctKey)
+                end
+            end)
+            screenGui:Destroy()
+        else
+            textBox.Text = ""
+            textBox.PlaceholderText = "No Quieres Proyectarte?"
+            textBox.PlaceholderColor3 = Color3.fromRGB(255, 80, 80)
+        end
+    end)
+
+    task.spawn(function()
+        task.wait(60)
+        if not verified then
+            pcall(function()
+                localPlayer:Kick("No podrás Proyectarte junto Nosotros")
+            end)
+        end
+    end)
+end
+
+while not verified do
+    task.wait(0.1)
+end
+
+-- ==========================================
+-- SCRIPT PRINCIPAL OPTIMIZADO
+-- ==========================================
+local services = {
+    Players = game:GetService("Players"),
+    ReplicatedStorage = game:GetService("ReplicatedStorage"),
+    VirtualUser = game:GetService("VirtualUser"),
+    Workspace = workspace,
+    Lighting = game:GetService("Lighting"),
+    UserInputService = game:GetService("UserInputService"),
+    VirtualInputManager = game:GetService("VirtualInputManager"),
+    RunService = game:GetService("RunService"),
+    CollectionService = game:GetService("CollectionService"),
+    HttpService = game:GetService("HttpService"),
+    StarterGui = game:GetService("StarterGui"),
+    MarketplaceService = game:GetService("MarketplaceService")
+}
+
+local utils = {}
+utils.runtime = {}
+
+for _, connection in ipairs(_G.HorarybrechMainConnections or {}) do
+    pcall(function() connection:Disconnect() end)
+end
+_G.HorarybrechMainConnections = {}
+_G.HorarybrechMainGeneration = (_G.HorarybrechMainGeneration or 0) + 1
+utils.Generation = _G.HorarybrechMainGeneration
+
+function utils.isCurrent()
+    return utils.Generation == _G.HorarybrechMainGeneration
+end
+
+function utils.connect(signal, callback, connection)
+    connection = signal:Connect(callback)
+    table.insert(_G.HorarybrechMainConnections, connection)
+    return connection
+end
+
+local lp = {
+    player = services.Players.LocalPlayer,
+    userid = services.Players.LocalPlayer.UserId,
+    username = services.Players.LocalPlayer.Name,
+    displayname = services.Players.LocalPlayer.DisplayName
+}
+
+utils.playerData = {
+    Player = lp.player,
+    DisplayName = lp.displayname,
+    Character = lp.player.Character,
+    Humanoid = nil,
+    Camera = services.Workspace.CurrentCamera,
+    Backpack = lp.player:WaitForChild("Backpack")
+}
+
+utils.playerData.Humanoid = utils.playerData.Character and utils.playerData.Character:FindFirstChildOfClass("Humanoid")
+
+local rEvents = services.ReplicatedStorage:WaitForChild("rEvents", 10)
+utils.remotes = {
+    ChangeSpeedSize = rEvents and rEvents:WaitForChild("changeSpeedSizeRemote"),
+    MuscleEvent = lp.player:WaitForChild("muscleEvent"),
+    QuestsEvent = rEvents and rEvents:FindFirstChild("questsEvent"),
+    PetEvolution = rEvents and (rEvents:FindFirstChild("petEvolutionEvent") or rEvents:FindFirstChild("fusePetsEvent")),
+    MachineInteract = rEvents and rEvents:WaitForChild("machineInteractRemote"),
+    GuiDamageEvent = rEvents and rEvents:FindFirstChild("guiDamageEvent")
+}
+
+function utils.formatNumber(n)
+    if n >= 1e18 then return string.format("%.1fqi", n / 1e18)
+    elseif n >= 1e15 then return string.format("%.1fqa", n / 1e15)
+    elseif n >= 1e12 then return string.format("%.1ft", n / 1e12)
+    elseif n >= 1e9 then return string.format("%.1fb", n / 1e9)
+    elseif n >= 1e6 then return string.format("%.1fm", n / 1e6)
+    elseif n >= 1e3 then return string.format("%.1fk", n / 1e3)
+    else return tostring(n) end
+end
+
+function utils.formatWithCommas(n, formatted, separatorCount)
+    formatted = tostring(math.floor(n))
+    while true do
+        formatted, separatorCount = formatted:gsub("^(-?%d+)(%d%d%d)", "%1.%2")
+        if separatorCount == 0 then break end
+    end
+    return formatted
+end
+
+function utils.deleteAds()
+    for _, portal in pairs(game:GetDescendants()) do
+        if portal.Name == "RobloxForwardPortals" then
+            portal:Destroy()
+        end
+    end
+    if _G.ads then _G.ads:Disconnect() end
+    _G.ads = game.DescendantAdded:Connect(function(descendant)
+        if descendant.Name == "RobloxForwardPortals" then
+            descendant:Destroy()
+        end
+    end)
+end
+utils.deleteAds()
+
+function deleteBodyMovementScript()
+    if lp.player.Character and lp.player.Character:FindFirstChild("bodyMovementScript") then
+        lp.player.Character.bodyMovementScript:Destroy()
+    end
+end
+deleteBodyMovementScript()
+
+function utils.tpE(pos)
+    pcall(function()
+        local char = lp.player.Character or lp.player.CharacterAdded:Wait()
+        local hrp = char:WaitForChild("HumanoidRootPart")
+        hrp.CFrame = CFrame.new(pos)
+        hrp.AssemblyLinearVelocity = Vector3.zero
+        task.wait(0.3)
+        services.VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+        task.wait(0.08)
+        services.VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+    end)
+end
+
+function formatNumberSilence(num)
+    if num >= 1e18 then return string.format("%.2fQi", num/1e18) end
+    if num >= 1e15 then return string.format("%.2fQa", num/1e15) end
+    if num >= 1e12 then return string.format("%.2fT", num/1e12) end
+    if num >= 1e9 then return string.format("%.2fB", num/1e9) end
+    if num >= 1e6 then return string.format("%.2fM", num/1e6) end
+    if num >= 1e3 then return string.format("%.2fK", num/1e3) end
+    return string.format("%.0f", num)
+end
+
+function formatPaceSilence(ratePerSecond)
+    return formatNumberSilence(ratePerSecond) .. "/s | "
+        .. formatNumberSilence(ratePerSecond * 60) .. "/min | "
+        .. formatNumberSilence(ratePerSecond * 3600) .. "/h | "
+        .. formatNumberSilence(ratePerSecond * 86400) .. "/d | "
+        .. formatNumberSilence(ratePerSecond * 604800) .. "/w"
+end
+
+local function createPrivacyRedactor(player, key)
+    local redactor = {
+        NameEnabled = false,
+        StatsEnabled = false,
+        OriginalNames = setmetatable({}, {__mode = "k"}),
+        OriginalStats = setmetatable({}, {__mode = "k"}),
+        NameGuis = setmetatable({}, {__mode = "k"}),
+    }
+    _G.HorarybrechPrivacyGenerations = _G.HorarybrechPrivacyGenerations or {}
+    _G.HorarybrechPrivacyGenerations[key] = (_G.HorarybrechPrivacyGenerations[key] or 0) + 1
+    local generation = _G.HorarybrechPrivacyGenerations[key]
+
+    local function containsName(text)
+        return string.find(text, player.Name, 1, true) or string.find(text, player.DisplayName, 1, true)
+    end
+
+    local function redact(storage, object, replacement)
+        local saved = storage[object]
+        if not saved or object.Text ~= saved.Redacted then
+            saved = {Original = object.Text}
+            storage[object] = saved
+        end
+        saved.Redacted = replacement
+        object.Text = replacement
+    end
+
+    local function restore(storage, stillDisabled)
+        local savedObjects = {}
+        for object, saved in pairs(storage) do
+            table.insert(savedObjects, {Object = object, Text = saved.Original})
+        end
+        table.clear(storage)
+        task.spawn(function()
+            for _ = 1, 3 do
+                if not stillDisabled() then return end
+                for _, saved in ipairs(savedObjects) do
+                    if saved.Object.Parent then saved.Object.Text = saved.Text end
+                end
+                task.wait(0.2)
+            end
+        end)
+    end
+
+    local function update()
+        local character = player.Character
+        if redactor.NameEnabled and character then
+            local nameGui = character:FindFirstChild("nameGui", true)
+            if nameGui and nameGui:IsA("BillboardGui") then nameGui.Enabled = false end
+        end
+        if redactor.StatsEnabled then
+            local coreGui = game:GetService("CoreGui")
+            for _, object in ipairs(coreGui:GetDescendants()) do
+                if object:IsA("TextLabel") or object:IsA("TextButton") then
+                    if containsName(object.Text) then
+                        redact(redactor.OriginalNames, object, "########")
+                    end
+                end
+            end
+        end
+    end
+
+    function redactor:SetNameEnabled(enabled)
+        self.NameEnabled = enabled
+        if not enabled then restore(self.OriginalNames, function() return not self.NameEnabled end) end
+        pcall(update)
+    end
+
+    function redactor:SetStatsEnabled(enabled)
+        self.StatsEnabled = enabled
+        if not enabled then restore(self.OriginalStats, function() return not self.StatsEnabled end) end
+        pcall(update)
+    end
+
+    task.spawn(function()
+        while _G.HorarybrechPrivacyGenerations[key] == generation do
+            if redactor.NameEnabled or redactor.StatsEnabled then pcall(update) end
+            task.wait(4)
+        end
+    end)
+    return redactor
+end
+
+-- ==========================================
+-- INICIALIZACIÓN DE INTERFAZ CON WINDUI
+-- ==========================================
+local Window = WindUI:CreateWindow({
+    Title = "Proyectados Hub | Muscle Legends",
+    Icon = "dumbbell",
+    Author = "Horarybrech",
+    Folder = "ProyectadosHub",
+    Size = UDim2.fromOffset(700, 600),
+    KeySystem = false,
+})
+
+utils.connect(lp.player.Idled, function()
+    services.VirtualUser:CaptureController()
+    services.VirtualUser:ClickButton2(Vector2.new())
+end)
+
+utils.connect(lp.player.CharacterAdded, function(character)
+    utils.playerData.Character = character
+    utils.playerData.Humanoid = character:WaitForChild("Humanoid", 10)
+    utils.playerData.Backpack = lp.player:WaitForChild("Backpack")
+end)
+
+local tabs = {
+    farming = Window:Tab({ Title = "Training", Icon = "dumbbell" }),
+    fullFarm = Window:Tab({ Title = "Fast Farm", Icon = "zap" }),
+    fullRebirth = Window:Tab({ Title = "Auto Rebirth", Icon = "rotate-cw" }),
+    configs = Window:Tab({ Title = "Zones", Icon = "map-pin" }),
+    boss = Window:Tab({ Title = "Bosses", Icon = "shield-alert" }),
+    clips = Window:Tab({ Title = "Combat / PvP", Icon = "swords" }),
+    misiones = Window:Tab({ Title = "Quests & Extras", Icon = "list-checks" }),
+    other = Window:Tab({ Title = "Utilities", Icon = "settings" }),
+    info = Window:Tab({ Title = "Info", Icon = "info" })
+}
+
+for _, tab in pairs(tabs) do
+    tab.runtime = {}
+end
+
+tabs.other.RedactConfig = {RedactName = true, RedactStats = false}
+tabs.other.redactStats = tabs.other.RedactConfig.RedactStats
+local privacyRedactor = createPrivacyRedactor(lp.player, "Farming")
+
+local function formatCurrentStat(value)
+    return tabs.other.redactStats and "####" or formatNumberSilence(value)
+end
+
+-- ==========================================
+-- TAB: TRAINING
+-- ==========================================
+tabs.farming:Section({ Title = "BASIC TRAINING" })
+
+tabs.farming.AutoLiftSpeed = 0.06
+tabs.farming:Input({
+    Title = "AutoLift Speed",
+    Default = "0.06",
+    Placeholder = "Speed...",
+    Callback = function(text)
+        local num = tonumber(text)
+        if num and num > 0 then tabs.farming.AutoLiftSpeed = num end
+    end
+})
+
+tabs.farming.ExerciseData = { SelectedTool = "Weight", AutoFarm = false }
+tabs.farming.ToolDropdown = tabs.farming:Dropdown({
+    Title = "Select Exercise",
+    Values = {"Weight", "Pushups", "Situps", "Handstands"},
+    Default = "Weight",
+    Callback = function(selection)
+        tabs.farming.ExerciseData.SelectedTool = selection
+    end
+})
+
+tabs.farming.AutoLiftActive = false
+tabs.farming.AutoLiftSwitch = tabs.farming:Toggle({
+    Title = "AutoLift",
+    Default = false,
+    Callback = function(state)
+        tabs.farming.AutoLiftActive = state
+        if state then
+            task.spawn(function()
+                while tabs.farming.AutoLiftActive and utils.isCurrent() do
+                    pcall(function()
+                        local char = utils.playerData.Player.Character
+                        local hum = char and char:FindFirstChildOfClass("Humanoid")
+                        if char and hum and hum.Health > 0 then
+                            local toolName = tabs.farming.ExerciseData.SelectedTool or "Weight"
+                            local exerciseTool = char:FindFirstChild(toolName) or utils.playerData.Player.Backpack:FindFirstChild(toolName)
+                            if exerciseTool then
+                                if exerciseTool.Parent ~= char then
+                                    hum:EquipTool(exerciseTool)
+                                    task.wait(0.02)
+                                end
+                                exerciseTool:Activate()
+                                utils.remotes.MuscleEvent:FireServer("rep")
+                            end
+                        end
+                    end)
+                    task.wait(tabs.farming.AutoLiftSpeed)
+                end
+            end)
+        end
+    end
+})
+
+tabs.farming:Toggle({
+    Title = "Free Auto Lift",
+    Default = false,
+    Callback = function(state)
+        lp.player:SetAttribute("AutoLiftEnabled", state)
+    end
+})
+
+tabs.farming:Section({ Title = "ROCK FARMING" })
+tabs.farming.RockData = {
+    Data = {["Tiny Rock - 0 Dura"] = 0, ["Large Rock - 100 Dura"] = 100, ["Punching Rock - 10 Dura"] = 10,
+        ["Golden Rock - 5k Dura"] = 5000, ["Frost Rock - 150k Dura"] = 150000, ["Mythical Rock - 400k Dura"] = 400000,
+        ["Eternal Rock - 750k Dura"] = 750000, ["Legend Rock - 1m Dura"] = 1000000, ["Muscle King Rock - 5m Dura"] = 5000000,
+        ["Jungle Rock - 10m Dura"] = 10000000, ["Industrial Rock - 25m Dura"] = 25000000},
+    SelectedRock = nil
+}
+
+local rockNames = {}
+for rockName in pairs(tabs.farming.RockData.Data) do table.insert(rockNames, rockName) end
+
+tabs.farming.RockDropdown = tabs.farming:Dropdown({
+    Title = "Select Rock",
+    Values = rockNames,
+    Callback = function(selection) tabs.farming.RockData.SelectedRock = selection end
+})
+
+tabs.farming:Toggle({
+    Title = "Auto Rock",
+    Default = false,
+    Callback = function(enabled)
+        getgenv().RockFarmRunning = enabled
+        if enabled and tabs.farming.RockData.SelectedRock then
+            task.spawn(function()
+                local targetDura = tabs.farming.RockData.Data[tabs.farming.RockData.SelectedRock]
+                local cachedRock = nil
+                while utils.isCurrent() and getgenv().RockFarmRunning do
+                    task.wait(0.12)
+                    pcall(function()
+                        if lp.player.Durability.Value >= targetDura then
+                            if not cachedRock or not cachedRock.Parent then
+                                for _, v in pairs(services.Workspace.machinesFolder:GetDescendants()) do
+                                    if v.Name == "neededDurability" and v.Value == targetDura and v.Parent:FindFirstChild("Rock") then
+                                        cachedRock = v.Parent.Rock
+                                        break
+                                    end
+                                end
+                            end
+                            local char = lp.player.Character
+                            if cachedRock and char and char:FindFirstChild("LeftHand") then
+                                firetouchinterest(cachedRock, char.RightHand, 0)
+                                firetouchinterest(cachedRock, char.RightHand, 1)
+                                firetouchinterest(cachedRock, char.LeftHand, 0)
+                                firetouchinterest(cachedRock, char.LeftHand, 1)
+                            end
+                        end
+                    end)
+                end
+            end)
+        end
+    end
+})
+
+tabs.farming:Section({ Title = "CHARACTER" })
+tabs.farming.SizeData = {Active = false}
+tabs.farming:Toggle({
+    Title = "Auto Size 1",
+    Default = false,
+    Callback = function(bool) tabs.farming.SizeData.Active = bool end
+})
+
+task.spawn(function()
+    while utils.isCurrent() do
+        if tabs.farming.SizeData.Active and lp.player.Character and utils.playerData.Humanoid then
+            pcall(utils.remotes.ChangeSpeedSize.InvokeServer, utils.remotes.ChangeSpeedSize, "changeSize", 1)
+        end
+        task.wait(1)
+    end
+end)
+
+-- ==========================================
+-- TAB: FAST FARM
+-- ==========================================
+tabs.fullFarm:Section({ Title = "REAL-TIME STATS" })
+tabs.fullFarm.leaderstats = lp.player:WaitForChild("leaderstats")
+tabs.fullFarm.strength = tabs.fullFarm.leaderstats:WaitForChild("Strength")
+tabs.fullFarm.durability = lp.player:WaitForChild("Durability")
+tabs.fullFarm.running = false
+tabs.fullFarm.workerActive = false
+tabs.fullFarm.startedAt = 0
+tabs.fullFarm.totalElapsed = 0
+tabs.fullFarm.timerStarted = false
+tabs.fullFarm.gainedBaselineSet = false
+tabs.fullFarm.startStrength = tabs.fullFarm.strength.Value
+tabs.fullFarm.startDurability = tabs.fullFarm.durability.Value
+tabs.fullFarm.calculationInterval = 10
+tabs.fullFarm.lastCalculationAt = tick()
+tabs.fullFarm.lastCalculatedStrength = tabs.fullFarm.strength.Value
+tabs.fullFarm.lastCalculatedDurability = tabs.fullFarm.durability.Value
+tabs.fullFarm.initialSendRate = 200
+tabs.fullFarm.maxSendRate = 659
+tabs.fullFarm.sendRate = tabs.fullFarm.initialSendRate
+tabs.fullFarm.sendTokens = 0
+tabs.fullFarm.maxBurst = 24
+tabs.fullFarm.controlInterval = 0.5
+tabs.fullFarm.lastControlAt = tick()
+tabs.fullFarm.lastControlStrength = tabs.fullFarm.strength.Value
+tabs.fullFarm.lastControlDurability = tabs.fullFarm.durability.Value
+tabs.fullFarm.stalledIntervals = 0
+tabs.fullFarm.lastLoopAt = os.clock()
+
+tabs.fullFarm.Status = tabs.fullFarm:Paragraph({ Title = "Status", Content = "Inactive" })
+tabs.fullFarm.Runtime = tabs.fullFarm:Paragraph({ Title = "Runtime", Content = "0d 0h 0m 0s" })
+tabs.fullFarm.StrengthStats = tabs.fullFarm:Paragraph({ Title = "Strength", Content = formatCurrentStat(tabs.fullFarm.strength.Value) .. " | Gained: 0" })
+tabs.fullFarm.DurabilityStats = tabs.fullFarm:Paragraph({ Title = "Durability", Content = formatCurrentStat(tabs.fullFarm.durability.Value) .. " | Gained: 0" })
+tabs.fullFarm.StrengthPace = tabs.fullFarm:Paragraph({ Title = "Str Pace", Content = "--/s | --/min | --/h | --/d | --/w" })
+tabs.fullFarm.DurabilityPace = tabs.fullFarm:Paragraph({ Title = "Dura Pace", Content = "--/s | --/min | --/h | --/d | --/w" })
+tabs.fullFarm.StrengthAverage = tabs.fullFarm:Paragraph({ Title = "Str Ø", Content = "--/s | --/min | --/h | --/d | --/w" })
+tabs.fullFarm.DurabilityAverage = tabs.fullFarm:Paragraph({ Title = "Dura Ø", Content = "--/s | --/min | --/h | --/d | --/w" })
+
+tabs.fullFarm.updateRuntime = function()
+    tabs.fullFarm.elapsed = tabs.fullFarm.totalElapsed
+    if tabs.fullFarm.running and tabs.fullFarm.timerStarted then
+        tabs.fullFarm.elapsed = tabs.fullFarm.elapsed + tick() - tabs.fullFarm.startedAt
+    end
+    tabs.fullFarm.Runtime:SetDesc(string.format("%dd %dh %dm %ds",
+        math.floor(tabs.fullFarm.elapsed / 86400), math.floor((tabs.fullFarm.elapsed % 86400) / 3600),
+        math.floor((tabs.fullFarm.elapsed % 3600) / 60), math.floor(tabs.fullFarm.elapsed % 60)))
+end
+
+tabs.fullFarm.updateStats = function()
+    tabs.fullFarm.StrengthStats:SetDesc(formatCurrentStat(tabs.fullFarm.strength.Value) .. " | Gained: " .. formatNumberSilence(tabs.fullFarm.strength.Value - tabs.fullFarm.startStrength))
+    tabs.fullFarm.DurabilityStats:SetDesc(formatCurrentStat(tabs.fullFarm.durability.Value) .. " | Gained: " .. formatNumberSilence(tabs.fullFarm.durability.Value - tabs.fullFarm.startDurability))
+end
+
+tabs.fullFarm.calculatePace = function()
+    if not tabs.fullFarm.running or not tabs.fullFarm.timerStarted then return end
+    if tick() - tabs.fullFarm.lastCalculationAt < tabs.fullFarm.calculationInterval then return end
+    tabs.fullFarm.calculationElapsed = tick() - tabs.fullFarm.lastCalculationAt
+    tabs.fullFarm.strengthDelta = tabs.fullFarm.strength.Value - tabs.fullFarm.lastCalculatedStrength
+    tabs.fullFarm.durabilityDelta = tabs.fullFarm.durability.Value - tabs.fullFarm.lastCalculatedDurability
+    tabs.fullFarm.strengthPacePerSecond = tabs.fullFarm.strengthDelta / tabs.fullFarm.calculationElapsed
+    tabs.fullFarm.durabilityPacePerSecond = tabs.fullFarm.durabilityDelta / tabs.fullFarm.calculationElapsed
+    if tabs.fullFarm.strengthDelta > 0 then tabs.fullFarm.StrengthPace:SetDesc(formatPaceSilence(tabs.fullFarm.strengthPacePerSecond)) end
+    if tabs.fullFarm.durabilityDelta > 0 then tabs.fullFarm.DurabilityPace:SetDesc(formatPaceSilence(tabs.fullFarm.durabilityPacePerSecond)) end
+    tabs.fullFarm.averageElapsed = tabs.fullFarm.totalElapsed + tick() - tabs.fullFarm.startedAt
+    tabs.fullFarm.averageStrengthPerSecond = (tabs.fullFarm.strength.Value - tabs.fullFarm.startStrength) / tabs.fullFarm.averageElapsed
+    tabs.fullFarm.averageDurabilityPerSecond = (tabs.fullFarm.durability.Value - tabs.fullFarm.startDurability) / tabs.fullFarm.averageElapsed
+    tabs.fullFarm.StrengthAverage:SetDesc(formatPaceSilence(tabs.fullFarm.averageStrengthPerSecond))
+    tabs.fullFarm.DurabilityAverage:SetDesc(formatPaceSilence(tabs.fullFarm.averageDurabilityPerSecond))
+    tabs.fullFarm.lastCalculationAt = tick()
+    tabs.fullFarm.lastCalculatedStrength = tabs.fullFarm.strength.Value
+    tabs.fullFarm.lastCalculatedDurability = tabs.fullFarm.durability.Value
+end
+
+tabs.fullFarm.updateAdaptiveRate = function()
+    tabs.fullFarm.controlNow = tick()
+    tabs.fullFarm.controlElapsed = tabs.fullFarm.controlNow - tabs.fullFarm.lastControlAt
+    if tabs.fullFarm.controlElapsed < tabs.fullFarm.controlInterval then return end
+    tabs.fullFarm.serverProgress = tabs.fullFarm.strength.Value > tabs.fullFarm.lastControlStrength or tabs.fullFarm.durability.Value > tabs.fullFarm.lastControlDurability
+    if tabs.fullFarm.serverProgress then
+        tabs.fullFarm.stalledIntervals = 0
+        tabs.fullFarm.sendRate = math.min(tabs.fullFarm.maxSendRate, tabs.fullFarm.sendRate * 1.12)
+        tabs.fullFarm.Status:SetDesc("Farming | " .. formatNumberSilence(tabs.fullFarm.sendRate) .. " reps/s")
+    else
+        tabs.fullFarm.stalledIntervals = tabs.fullFarm.stalledIntervals + 1
+    end
+    if tabs.fullFarm.stalledIntervals >= 2 then
+        tabs.fullFarm.sendRate = math.max(tabs.fullFarm.initialSendRate, tabs.fullFarm.sendRate * 0.65)
+        tabs.fullFarm.sendTokens = 0
+        tabs.fullFarm.Status:SetDesc("Slowing for server | " .. formatNumberSilence(tabs.fullFarm.sendRate) .. " reps/s")
+    end
+    tabs.fullFarm.lastControlAt = tabs.fullFarm.controlNow
+    tabs.fullFarm.lastControlStrength = tabs.fullFarm.strength.Value
+    tabs.fullFarm.lastControlDurability = tabs.fullFarm.durability.Value
+end
+
+tabs.fullFarm.workerLoop = function()
+    tabs.fullFarm.lastLoopAt = os.clock()
+    while tabs.fullFarm.running do
+        tabs.fullFarm.loopNow = os.clock()
+        tabs.fullFarm.loopElapsed = math.min(0.1, tabs.fullFarm.loopNow - tabs.fullFarm.lastLoopAt)
+        tabs.fullFarm.lastLoopAt = tabs.fullFarm.loopNow
+        tabs.fullFarm.updateAdaptiveRate()
+        tabs.fullFarm.sendTokens = math.min(tabs.fullFarm.maxBurst, tabs.fullFarm.sendTokens + tabs.fullFarm.sendRate * tabs.fullFarm.loopElapsed)
+        tabs.fullFarm.burstLimit = math.max(1, math.min(tabs.fullFarm.maxBurst, math.ceil(tabs.fullFarm.sendRate * 0.05)))
+        tabs.fullFarm.sendCount = math.min(math.floor(tabs.fullFarm.sendTokens), tabs.fullFarm.burstLimit)
+        tabs.fullFarm.repIndex = 1
+        while tabs.fullFarm.repIndex <= tabs.fullFarm.sendCount do
+            utils.remotes.MuscleEvent:FireServer("rep")
+            tabs.fullFarm.repIndex = tabs.fullFarm.repIndex + 1
+        end
+        tabs.fullFarm.sendTokens = tabs.fullFarm.sendTokens - tabs.fullFarm.sendCount
+        services.RunService.Heartbeat:Wait()
+    end
+    tabs.fullFarm.workerActive = false
+end
+
+tabs.fullFarm.startWorker = function()
+    if tabs.fullFarm.workerActive then return end
+    tabs.fullFarm.workerActive = true
+    task.spawn(tabs.fullFarm.workerLoop)
+end
+
+tabs.fullFarm.strength:GetPropertyChangedSignal("Value"):Connect(function()
+    tabs.fullFarm.updateStats()
+    if not tabs.fullFarm.timerStarted and tabs.fullFarm.running then
+        tabs.fullFarm.timerStarted = true
+        tabs.fullFarm.startedAt = tick()
+        tabs.fullFarm.lastCalculationAt = tick()
+        tabs.fullFarm.lastCalculatedStrength = tabs.fullFarm.strength.Value
+        tabs.fullFarm.lastCalculatedDurability = tabs.fullFarm.durability.Value
+    end
+end)
+
+tabs.fullFarm:Section({ Title = "FARM CONTROLS" })
+tabs.fullFarm:Input({
+    Title = "Max reps/s",
+    Default = "659",
+    Placeholder = "659",
+    Callback = function(inputText)
+        tabs.fullFarm.maxSendRate = tonumber(inputText)
+        if tabs.fullFarm.maxSendRate then
+            tabs.fullFarm.maxSendRate = math.max(1, tabs.fullFarm.maxSendRate)
+            tabs.fullFarm.sendRate = math.min(tabs.fullFarm.sendRate, tabs.fullFarm.maxSendRate)
+        end
+    end
+})
+
+tabs.fullFarm.FastRepToggle = tabs.fullFarm:Toggle({
+    Title = "Fast Rep",
+    Default = false,
+    Callback = function(state)
+        tabs.fullFarm.running = state
+        if state then
+            if not tabs.fullFarm.gainedBaselineSet then
+                tabs.fullFarm.startStrength = tabs.fullFarm.strength.Value
+                tabs.fullFarm.startDurability = tabs.fullFarm.durability.Value
+                tabs.fullFarm.gainedBaselineSet = true
+            end
+            tabs.fullFarm.timerStarted = false
+            tabs.fullFarm.startedAt = 0
+            tabs.fullFarm.sendRate = tabs.fullFarm.initialSendRate
+            tabs.fullFarm.sendTokens = 0
+            tabs.fullFarm.lastLoopAt = os.clock()
+            tabs.fullFarm.lastControlAt = tick()
+            tabs.fullFarm.lastControlStrength = tabs.fullFarm.strength.Value
+            tabs.fullFarm.lastControlDurability = tabs.fullFarm.durability.Value
+            tabs.fullFarm.stalledIntervals = 0
+            tabs.fullFarm.Status:SetDesc("Farming | 200 reps/s")
+            tabs.fullFarm.startWorker()
+        else
+            if tabs.fullFarm.timerStarted and tabs.fullFarm.startedAt > 0 then
+                tabs.fullFarm.totalElapsed = tabs.fullFarm.totalElapsed + tick() - tabs.fullFarm.startedAt
+                tabs.fullFarm.startedAt = 0
+                tabs.fullFarm.timerStarted = false
+            end
+            tabs.fullFarm.sendTokens = 0
+            tabs.fullFarm.Status:SetDesc(tabs.fullFarm.gainedBaselineSet and "Paused" or "Inactive")
+            tabs.fullFarm.updateRuntime()
+        end
+    end
+})
+
+task.spawn(function()
+    while true do
+        tabs.fullFarm.updateRuntime()
+        tabs.fullFarm.calculatePace()
+        task.wait(1)
+    end
+end)
+
+-- ==========================================
+-- TAB: AUTO REBIRTH
+-- ==========================================
+tabs.fullRebirth:Section({ Title = "GOALS" })
+tabs.fullRebirth.TargetRebirths = 0
+tabs.fullRebirth:Input({
+    Title = "Target Rebirths",
+    Default = "0",
+    Placeholder = "0 for infinite",
+    Callback = function(val)
+        local num = tonumber(val)
+        if num then 
+            tabs.fullRebirth.TargetRebirths = math.floor(num)
+            tabs.fullRebirth.FastRebirthV2Data.TargetRebirths = math.floor(num)
+        end
+    end
+})
+
+tabs.fullRebirth:Section({ Title = "PET PHASES" })
+tabs.fullRebirth.FastRebirthV2Data = {
+    Running = false,
+    WorkerActive = false,
+    Rebirths = lp.player.leaderstats:WaitForChild("Rebirths"),
+    Strength = lp.player.leaderstats:WaitForChild("Strength"),
+    TargetRebirths = 0,
+    RebirthsGained = 0,
+    LastRebirthTime = 0,
+    TotalRebirths = 0,
+    StartRebirths = lp.player.leaderstats:WaitForChild("Rebirths").Value,
+    UseFarmPets = true,
+    UsePackPets = true,
+    UseGolems = true,
+    PackPets = {"Titanium Hydra", "Tribal Overlord"},
+    RepPets = {"Omega Overlord", "Swift Samurai"},
+    GolemPets = {"Powercore Hound", "Mighty Monster", "Wild Wizard", "Chaos Sorcerer", "Mythic Boss Pet", "Legendary Boss Pet", "Epic Boss Pet", "Rainbow Boss Pet"}
+}
+
+tabs.fullRebirth:Toggle({ Title = "Phase 1: Farm", Default = true, Callback = function(state) tabs.fullRebirth.FastRebirthV2Data.UseFarmPets = state end })
+tabs.fullRebirth:Toggle({ Title = "Phase 2: Packs", Default = true, Callback = function(state) tabs.fullRebirth.FastRebirthV2Data.UsePackPets = state end })
+tabs.fullRebirth:Toggle({ Title = "Phase 3: Golems", Default = true, Callback = function(state) tabs.fullRebirth.FastRebirthV2Data.UseGolems = state end })
+
+tabs.fullRebirth:Section({ Title = "STATUS" })
+tabs.fullRebirth.FastRebirthV2Status = tabs.fullRebirth:Paragraph({ Title = "Status", Content = "Inactive" })
+tabs.fullRebirth.FastRebirthV2Stats = tabs.fullRebirth:Paragraph({ Title = "Rebirths", Content = "0 | Gained: 0" })
+tabs.fullRebirth.FastRebirthV2Speed = tabs.fullRebirth:Paragraph({ Title = "Speed", Content = "--/min" })
+tabs.fullRebirth.MissingLabel = tabs.fullRebirth:Paragraph({ Title = "Missing Rebirths", Content = "0" })
+tabs.fullRebirth.AvgTimeLabel = tabs.fullRebirth:Paragraph({ Title = "Pace", Content = "Calculating..." })
+tabs.fullRebirth.EtaLabel = tabs.fullRebirth:Paragraph({ Title = "ETA", Content = "0d 0h 0m 0s" })
+
+tabs.fullRebirth.updateRebirthStats = function()
+    local currentCount = tabs.fullRebirth.FastRebirthV2Data.Rebirths.Value
+    local gained = currentCount - tabs.fullRebirth.FastRebirthV2Data.StartRebirths
+    tabs.fullRebirth.FastRebirthV2Stats:SetDesc(utils.formatWithCommas(currentCount) .. " | Gained: " .. utils.formatWithCommas(gained))
+end
+
+tabs.fullRebirth.FastRebirthV2Data.Rebirths:GetPropertyChangedSignal("Value"):Connect(function()
+    tabs.fullRebirth.updateRebirthStats()
+end)
+
+tabs.fullRebirth.updateRebirthStats()
+
+tabs.fullRebirth.equipPetsByNameV2 = function(petNames, maxPets)
+    maxPets = maxPets or 12
+    local uniquePets = lp.player.petsFolder.Unique
+    local equipped = 0
+    
+    for _, folder in pairs(lp.player.petsFolder:GetChildren()) do
+        if folder:IsA("Folder") and folder.Name ~= "Unique" then
+            for _, pet in pairs(folder:GetChildren()) do
+                pcall(function() services.ReplicatedStorage.rEvents.equipPetEvent:FireServer("unequipPet", pet) end)
+            end
+        end
+    end
+    task.wait(0.1)
+    
+    for _, petName in ipairs(petNames) do
+        if equipped >= maxPets then break end
+        for _, pet in pairs(uniquePets:GetChildren()) do
+            if equipped >= maxPets then break end
+            if pet.Name == petName then
+                pcall(function() services.ReplicatedStorage.rEvents.equipPetEvent:FireServer("equipPet", pet) end)
+                equipped = equipped + 1
+                task.wait(0.05)
+            end
+        end
+    end
+    return equipped
+end
+
+tabs.fullRebirth.FastRebirthV2Worker = function()
+    tabs.fullRebirth.FastRebirthV2Data.StartRebirths = tabs.fullRebirth.FastRebirthV2Data.Rebirths.Value
+    tabs.fullRebirth.updateRebirthStats()
+    tabs.fullRebirth.FastRebirthV2Data.TotalRebirths = 0
+    local lastCheck = tick()
+    local lastRebirthCount = tabs.fullRebirth.FastRebirthV2Data.Rebirths.Value
+    local startTime = tick()
+    
+    while utils.isCurrent() and tabs.fullRebirth.FastRebirthV2Data.Running do
+        if tabs.fullRebirth.FastRebirthV2Data.TargetRebirths > 0 and tabs.fullRebirth.FastRebirthV2Data.Rebirths.Value >= tabs.fullRebirth.FastRebirthV2Data.TargetRebirths then
+            tabs.fullRebirth.FastRebirthV2Status:SetDesc("Target reached!")
+            tabs.fullRebirth.FastRebirthV2Data.Running = false
+            break
+        end
+        
+        if tabs.fullRebirth.FastRebirthV2Data.UseFarmPets then
+            tabs.fullRebirth.FastRebirthV2Status:SetDesc("Equipping speed pets...")
+            pcall(function() tabs.fullRebirth.equipPetsByNameV2(tabs.fullRebirth.FastRebirthV2Data.RepPets, 12) end)
+            task.wait(0.3)
+        end
+        
+        local currentRebirths = tabs.fullRebirth.FastRebirthV2Data.Rebirths.Value
+        local targetStrength = 5000 + currentRebirths * 2550
+        local repsPerBurst = lp.player.MembershipType == Enum.MembershipType.Premium and 6 or 12
+        
+        tabs.fullRebirth.FastRebirthV2Status:SetDesc("Farming... " .. utils.formatNumber(tabs.fullRebirth.FastRebirthV2Data.Strength.Value) .. " / " .. utils.formatNumber(targetStrength))
+        
+        while utils.isCurrent() and tabs.fullRebirth.FastRebirthV2Data.Running and tabs.fullRebirth.FastRebirthV2Data.Strength.Value < targetStrength do
+            for i = 1, repsPerBurst do
+                pcall(function() utils.remotes.MuscleEvent:FireServer("rep") end)
+            end
+            task.wait(0.02)
+        end
+        
+        if utils.isCurrent() and tabs.fullRebirth.FastRebirthV2Data.Running and tabs.fullRebirth.FastRebirthV2Data.Strength.Value >= targetStrength then
+            if tabs.fullRebirth.FastRebirthV2Data.UsePackPets then
+                tabs.fullRebirth.FastRebirthV2Status:SetDesc("Equipping pack pets...")
+                pcall(function() tabs.fullRebirth.equipPetsByNameV2(tabs.fullRebirth.FastRebirthV2Data.PackPets, 12) end)
+                task.wait(0.5)
+            end
+            
+            tabs.fullRebirth.FastRebirthV2Status:SetDesc("Rebirthing...")
+            local rebirthValueBefore = tabs.fullRebirth.FastRebirthV2Data.Rebirths.Value
+            local attempts = 0
+            
+            repeat
+                pcall(function() services.ReplicatedStorage.rEvents.rebirthRemote:InvokeServer("rebirthRequest") end)
+                task.wait(0.05)
+                attempts = attempts + 1
+            until not tabs.fullRebirth.FastRebirthV2Data.Running or tabs.fullRebirth.FastRebirthV2Data.Rebirths.Value > rebirthValueBefore or attempts >= 50
+            
+            if tabs.fullRebirth.FastRebirthV2Data.Rebirths.Value > rebirthValueBefore then
+                tabs.fullRebirth.FastRebirthV2Data.TotalRebirths = tabs.fullRebirth.FastRebirthV2Data.TotalRebirths + (tabs.fullRebirth.FastRebirthV2Data.Rebirths.Value - rebirthValueBefore)
+                tabs.fullRebirth.FastRebirthV2Data.LastRebirthTime = tick()
+            end
+            
+            if tabs.fullRebirth.FastRebirthV2Data.UseGolems then
+                tabs.fullRebirth.FastRebirthV2Status:SetDesc("Re-equipping golems...")
+                task.wait(0.5)
+                pcall(function() tabs.fullRebirth.equipPetsByNameV2(tabs.fullRebirth.FastRebirthV2Data.GolemPets, 12) end)
+            end
+        end
+        
+        if tick() - lastCheck >= 1 then
+            local currentCount = tabs.fullRebirth.FastRebirthV2Data.Rebirths.Value
+            local gained = currentCount - lastRebirthCount
+            tabs.fullRebirth.FastRebirthV2Speed:SetDesc(gained .. " rebirths/s")
+            lastRebirthCount = currentCount
+            
+            local secElapsed = tick() - startTime
+            local totalGained = currentCount - tabs.fullRebirth.FastRebirthV2Data.StartRebirths
+            if totalGained > 0 then
+                local avgSecPerRb = secElapsed / totalGained
+                tabs.fullRebirth.AvgTimeLabel:SetDesc(string.format("%.2f s/rebirth", avgSecPerRb))
+                
+                if tabs.fullRebirth.TargetRebirths > 0 then
+                    local missing = math.max(0, tabs.fullRebirth.TargetRebirths - currentCount)
+                    tabs.fullRebirth.MissingLabel:SetDesc(utils.formatWithCommas(missing))
+                    local etaSec = missing * avgSecPerRb
+                    local etaD = math.floor(etaSec / 86400)
+                    local etaH = math.floor((etaSec % 86400) / 3600)
+                    local etaM = math.floor((etaSec % 3600) / 60)
+                    local etaS = math.floor(etaSec % 60)
+                    tabs.fullRebirth.EtaLabel:SetDesc(string.format("%dd %dh %dm %ds", etaD, etaH, etaM, etaS))
+                end
+            end
+            lastCheck = tick()
+        end
+        task.wait(0.3)
+    end
+    tabs.fullRebirth.FastRebirthV2Data.WorkerActive = false
+end
+
+tabs.fullRebirth:Section({ Title = "CONTROL" })
+tabs.fullRebirth.FastRebirthV2Toggle = tabs.fullRebirth:Toggle({
+    Title = "Auto Rebirth",
+    Default = false,
+    Callback = function(state)
+        tabs.fullRebirth.FastRebirthV2Data.Running = state
+        if state then
+            tabs.fullRebirth.FastRebirthV2Status:SetDesc("Starting...")
+            if not tabs.fullRebirth.FastRebirthV2Data.WorkerActive then
+                tabs.fullRebirth.FastRebirthV2Data.WorkerActive = true
+                task.spawn(tabs.fullRebirth.FastRebirthV2Worker)
+            end
+        else
+            tabs.fullRebirth.FastRebirthV2Status:SetDesc("Inactive")
+        end
+    end
+})
+
+-- ==========================================
+-- TAB: ZONES
+-- ==========================================
+tabs.configs:Section({ Title = "MUSCLE KING ZONE" })
+tabs.configs.KingData = {TargetPosition = CFrame.new(-8749, 124, -5861), TeleportActive = false}
+
+task.spawn(function()
+    while utils.isCurrent() do
+        if tabs.configs.KingData.TeleportActive then
+            pcall(function()
+                local char = lp.player.Character
+                local hrp = char and char:FindFirstChild("HumanoidRootPart")
+                if hrp and (hrp.Position - tabs.configs.KingData.TargetPosition.Position).magnitude > 5 then
+                    hrp.CFrame = tabs.configs.KingData.TargetPosition
+                    hrp.AssemblyLinearVelocity = Vector3.zero
+                end
+            end)
+        end
+        task.wait(0.5)
+    end
+end)
+
+local kingSwitchRef = nil
+kingSwitchRef = tabs.configs:Toggle({
+    Title = "Auto Farm Muscle King",
+    Default = false,
+    Callback = function(state)
+        tabs.configs.KingData.TeleportActive = state
+        if state then
+            tabs.farming.ExerciseData.SelectedTool = "Weight"
+        end
+        if tabs.farming and tabs.farming.AutoLiftSwitch then
+            tabs.farming.AutoLiftSwitch:Set(state)
+        end
+    end
+})
+
+tabs.configs:Section({ Title = "HALLOWEEN ZONE" })
+tabs.configs.HalloweenLiftActive = false
+tabs.configs.HalloweenConnection = nil
+tabs.configs.SquatLoopActive = false
+tabs.configs.SquatConnection = nil
+
+local function setupHalloweenRespawn(pos, isSquat)
+    local connKey = isSquat and "SquatConnection" or "HalloweenConnection"
+    if tabs.configs[connKey] then
+        tabs.configs[connKey]:Disconnect()
+        tabs.configs[connKey] = nil
+    end
+    
+    tabs.configs[connKey] = lp.player.CharacterAdded:Connect(function(char)
+        local activeCheck = isSquat and tabs.configs.SquatLoopActive or tabs.configs.HalloweenLiftActive
+        if not activeCheck then return end
+        task.wait(1)
+        pcall(function()
+            utils.tpE(pos)
+        end)
+    end)
+end
+
+local function isMachineOccupied(targetPos)
+    local occupied = false
+    pcall(function()
+        for _, machine in ipairs(services.Workspace.machinesFolder:GetChildren()) do
+            local seat = machine:FindFirstChild("interactSeat") or machine:FindFirstChild("Seat") or machine:FindFirstChild("Part")
+            if seat and (seat.Position - targetPos).Magnitude < 15 then
+                for _, player in ipairs(services.Players:GetPlayers()) do
+                    if player ~= lp.player and player.Character then
+                        local hum = player.Character:FindFirstChildOfClass("Humanoid")
+                        if hum and hum.SeatPart == seat then
+                            occupied = true
+                            break
+                        end
+                    end
+                end
+            end
+        end
+    end)
+    return occupied
+end
+
+task.spawn(function()
+    while utils.isCurrent() do
+        task.wait(2)
+        pcall(function()
+            if tabs.configs.HalloweenLiftActive then
+                local targetPos = Vector3.new(5738, 86, 6415)
+                if isMachineOccupied(targetPos) then
+                    tabs.configs.HalloweenLiftActive = false
+                    if tabs.configs.HalloweenConnection then
+                        tabs.configs.HalloweenConnection:Disconnect()
+                        tabs.configs.HalloweenConnection = nil
+                    end
+                    pcall(function() utils.remotes.MachineInteract:InvokeServer("leaveMachine") end)
+                    if tabs.fullFarm and tabs.fullFarm.FastRepToggle then tabs.fullFarm.FastRepToggle:Set(false) end
+                    
+                    if kingSwitchRef and kingSwitchRef.Set then
+                        kingSwitchRef:Set(true)
+                    else
+                        tabs.configs.KingData.TeleportActive = true
+                        tabs.farming.ExerciseData.SelectedTool = "Weight"
+                        if tabs.farming and tabs.farming.AutoLiftSwitch then
+                            tabs.farming.AutoLiftSwitch:Set(true)
+                        end
+                    end
+                end
+            end
+
+            if tabs.configs.SquatLoopActive then
+                local targetPos = Vector3.new(4813, 85, 5840)
+                if isMachineOccupied(targetPos) then
+                    tabs.configs.SquatLoopActive = false
+                    if tabs.configs.SquatConnection then
+                        tabs.configs.SquatConnection:Disconnect()
+                        tabs.configs.SquatConnection = nil
+                    end
+                    pcall(function() utils.remotes.MachineInteract:InvokeServer("leaveMachine") end)
+                    if tabs.fullFarm and tabs.fullFarm.FastRepToggle then tabs.fullFarm.FastRepToggle:Set(false) end
+                    
+                    if kingSwitchRef and kingSwitchRef.Set then
+                        kingSwitchRef:Set(true)
+                    else
+                        tabs.configs.KingData.TeleportActive = true
+                        tabs.farming.ExerciseData.SelectedTool = "Weight"
+                        if tabs.farming and tabs.farming.AutoLiftSwitch then
+                            tabs.farming.AutoLiftSwitch:Set(true)
+                        end
+                    end
+                end
+            end
+        end)
+    end
+end)
+
+tabs.configs:Toggle({
+    Title = "Farm Halloween Lift",
+    Default = false,
+    Callback = function(state)
+        tabs.configs.HalloweenLiftActive = state
+        local targetPos = Vector3.new(5738, 86, 6415)
+        if state then
+            pcall(function() utils.tpE(targetPos) end)
+            setupHalloweenRespawn(targetPos, false)
+        else
+            if tabs.configs.HalloweenConnection then
+                tabs.configs.HalloweenConnection:Disconnect()
+                tabs.configs.HalloweenConnection = nil
+            end
+            pcall(function() utils.remotes.MachineInteract:InvokeServer("leaveMachine") end)
+        end
+        if tabs.fullFarm and tabs.fullFarm.FastRepToggle then tabs.fullFarm.FastRepToggle:Set(state) end
+    end
+})
+
+tabs.configs:Toggle({
+    Title = "Farm Halloween Squat",
+    Default = false,
+    Callback = function(state)
+        tabs.configs.SquatLoopActive = state
+        local targetPos = Vector3.new(4813, 85, 5840)
+        if state then
+            pcall(function() utils.tpE(targetPos) end)
+            setupHalloweenRespawn(targetPos, true)
+        else
+            if tabs.configs.SquatConnection then
+                tabs.configs.SquatConnection:Disconnect()
+                tabs.configs.SquatConnection = nil
+            end
+            pcall(function() utils.remotes.MachineInteract:InvokeServer("leaveMachine") end)
+        end
+        if tabs.fullFarm and tabs.fullFarm.FastRepToggle then tabs.fullFarm.FastRepToggle:Set(state) end
+    end
+})
+
+tabs.configs:Section({ Title = "ZONE REBIRTH" })
+tabs.configs:Toggle({
+    Title = "Auto Rebirth (Zones)",
+    Default = false,
+    Callback = function(state)
+        if tabs.fullRebirth and tabs.fullRebirth.FastRebirthV2Toggle then
+            tabs.fullRebirth.FastRebirthV2Toggle:Set(state)
+        end
+    end
+})
+
+-- ==========================================
+-- TAB: BOSSES
+-- ==========================================
+tabs.boss.NormalData = {
+    Running = false,
+    Generation = 0,
+    TargetBoss = "Todos",
+    HitInterval = 0.03,
+    NormalBosses = {}
+}
+
+tabs.boss.HalloweenData = {
+    Running = false,
+    Generation = 0,
+    TargetBoss = "Todos",
+    HitInterval = 0.03,
+    HalloweenBosses = {}
+}
+
+local halloweenBossNames = {"Frankenbrute", "Scarecrow Colossus", "Grim Reaper", "Pumpkin Titan"}
+
+tabs.boss:Section({ Title = "GENERAL STATUS" })
+tabs.boss.StatusLabel = tabs.boss:Paragraph({ Title = "Status", Content = "Inactive" })
+tabs.boss.BossLabel = tabs.boss:Paragraph({ Title = "Boss", Content = "None" })
+tabs.boss.HealthLabel = tabs.boss:Paragraph({ Title = "Health", Content = "0 / 0" })
+
+tabs.boss.getBossData = function(bossModel)
+    local stats = bossModel:FindFirstChild("stats")
+    local health = (stats and stats:FindFirstChild("Health") and stats.Health.Value) or bossModel:GetAttribute("BossHealth") or bossModel:GetAttribute("Health")
+    local maxHealth = (stats and stats:FindFirstChild("MaxHealth") and stats.MaxHealth.Value) or bossModel:GetAttribute("BossMaxHealth") or bossModel:GetAttribute("MaxHealth")
+    local hitbox = bossModel:FindFirstChild("BossDamageHitbox", true) or bossModel:FindFirstChild("HumanoidRootPart") or bossModel:FindFirstChild("PrimaryPart")
+    return health, maxHealth, hitbox
+end
+
+-- Normal Bosses
+tabs.boss:Section({ Title = "NORMAL BOSSES" })
+tabs.boss.findNormalBoss = function()
+    for _, candidate in ipairs(services.CollectionService:GetTagged("BossEventBoss")) do
+        if candidate:IsA("Model") and candidate:IsDescendantOf(services.Workspace) then
+            local bossName = candidate:GetAttribute("BossDisplayName") or candidate.Name
+            tabs.boss.addNormalBossChoice(bossName)
+            if tabs.boss.NormalData.TargetBoss == "Todos" or tabs.boss.NormalData.TargetBoss == bossName then
+                local health, maxHealth, hitbox = tabs.boss.getBossData(candidate)
+                if hitbox then return candidate, bossName, health, maxHealth, hitbox end
+            end
+        end
+    end
+    local arena = services.Workspace:FindFirstChild("Events") and services.Workspace.Events:FindFirstChild("BossArena")
+    if arena then
+        for _, candidate in ipairs(arena:GetChildren()) do
+            if candidate:IsA("Model") then
+                local bossName = candidate:GetAttribute("BossDisplayName") or candidate.Name
+                if candidate:GetAttribute("BossRarityIndex") ~= nil and (tabs.boss.NormalData.TargetBoss == "Todos" or tabs.boss.NormalData.TargetBoss == bossName) then
+                    local health, maxHealth, hitbox = tabs.boss.getBossData(candidate)
+                    if hitbox then return candidate, bossName, health, maxHealth, hitbox end
+                end
+            end
+        end
+    end
+    return nil
+end
+
+tabs.boss.NormalDropdownValues = {"Todos"}
+tabs.boss.NormalDropdown = tabs.boss:Dropdown({
+    Title = "Select Normal Boss",
+    Values = tabs.boss.NormalDropdownValues,
+    Default = "Todos",
+    Callback = function(selectedName)
+        if selectedName ~= "" then tabs.boss.NormalData.TargetBoss = selectedName end
+    end
+})
+
+tabs.boss.addNormalBossChoice = function(name)
+    name = tostring(name or "")
+    if name ~= "" and not tabs.boss.NormalData.NormalBosses[name] then
+        tabs.boss.NormalData.NormalBosses[name] = true
+        table.insert(tabs.boss.NormalDropdownValues, name)
+        tabs.boss.NormalDropdown:Refresh(tabs.boss.NormalDropdownValues)
+    end
+end
+
+pcall(function()
+    local config = require(services.ReplicatedStorage:WaitForChild("shared"):WaitForChild("config"):WaitForChild("BossEventConfig"))
+    if config and config.RARITIES then
+        for _, rarity in ipairs(config.RARITIES) do tabs.boss.addNormalBossChoice(rarity.DisplayName or rarity.Name or rarity.BossModel) end
+    end
+end)
+
+tabs.boss:Dropdown({
+    Title = "Normal Attack Speed",
+    Values = {"Max", "Fast", "Normal", "Slow"},
+    Default = "Fast",
+    Callback = function(selected)
+        if selected == "Max" then tabs.boss.NormalData.HitInterval = 0.01
+        elseif selected == "Fast" then tabs.boss.NormalData.HitInterval = 0.03
+        elseif selected == "Normal" then tabs.boss.NormalData.HitInterval = 0.06
+        elseif selected == "Slow" then tabs.boss.NormalData.HitInterval = 0.12 end
+    end
+})
+
+tabs.boss:Toggle({
+    Title = "Auto Farm Normal Boss",
+    Default = false,
+    Callback = function(state)
+        tabs.boss.NormalData.Running = state
+        tabs.boss.NormalData.Generation = tabs.boss.NormalData.Generation + 1
+        local gen = tabs.boss.NormalData.Generation
+        
+        pcall(function()
+            if utils.remotes.ChangeSpeedSize then
+                local targetSize = state and 5 or 2
+                utils.remotes.ChangeSpeedSize:InvokeServer("changeSize", targetSize)
+            end
+        end)
+
+        if not state then
+            tabs.boss.StatusLabel:SetDesc("Inactive")
+            tabs.boss.BossLabel:SetDesc("None")
+            tabs.boss.HealthLabel:SetDesc("0 / 0")
+            return
+        end
+
+        task.spawn(function()
+            while utils.isCurrent() and tabs.boss.NormalData.Running and tabs.boss.NormalData.Generation == gen do
+                pcall(function()
+                    local model, bossName, health, maxHealth, hitbox = tabs.boss.findNormalBoss()
+                    if model and hitbox then
+                        tabs.boss.StatusLabel:SetDesc("Fighting Normal Boss")
+                        tabs.boss.BossLabel:SetDesc(bossName)
+                        if health and maxHealth then
+                            tabs.boss.HealthLabel:SetDesc(formatNumberSilence(health) .. " / " .. formatNumberSilence(maxHealth))
+                        else
+                            tabs.boss.HealthLabel:SetDesc("Active")
+                        end
+                        hitbox.Size = Vector3.new(60, 120, 60)
+                        hitbox.Transparency = 1
+                        hitbox.CanCollide = false
+                        local char = lp.player.Character
+                        local hrp = char and char:FindFirstChild("HumanoidRootPart")
+                        local punch = char and char:FindFirstChild("Punch") or utils.playerData.Backpack:FindFirstChild("Punch")
+                        
+                        if hrp then
+                            if punch and punch.Parent ~= char then char.Humanoid:EquipTool(punch) end
+                            local alturaDinamica = (hitbox.Size.Y / 2) + 15
+                            hrp.CFrame = CFrame.lookAt(hitbox.Position + Vector3.new(0, alturaDinamica, 0), hitbox.Position)
+                            hrp.AssemblyLinearVelocity = Vector3.zero
+                            if utils.remotes.MuscleEvent then
+                                utils.remotes.MuscleEvent:FireServer("punch", "leftHand")
+                                utils.remotes.MuscleEvent:FireServer("punch", "rightHand")
+                            end
+                            if punch then punch:Activate() end
+                        end
+                    else
+                        tabs.boss.StatusLabel:SetDesc("Waiting Normal Boss")
+                        tabs.boss.BossLabel:SetDesc("None")
+                        tabs.boss.HealthLabel:SetDesc("0 / 0")
+                    end
+                end)
+                task.wait(tabs.boss.NormalData.HitInterval)
+            end
+        end)
+    end
+})
+
+-- Halloween Bosses
+tabs.boss:Section({ Title = "HALLOWEEN BOSSES" })
+tabs.boss.findHalloweenBoss = function()
+    for _, bossName in ipairs(halloweenBossNames) do
+        if tabs.boss.HalloweenData.TargetBoss == "Todos" or tabs.boss.HalloweenData.TargetBoss == bossName then
+            local candidate = services.Workspace:FindFirstChild(bossName)
+            if candidate and candidate:IsA("Model") then
+                local health, maxHealth, hitbox = tabs.boss.getBossData(candidate)
+                if hitbox then return candidate, bossName, health, maxHealth, hitbox end
+            end
+        end
+    end
+    return nil
+end
+
+local halloweenValues = {"Todos"}
+for _, name in ipairs(halloweenBossNames) do
+    tabs.boss.HalloweenData.HalloweenBosses[name] = true
+    table.insert(halloweenValues, name)
+end
+
+tabs.boss:Dropdown({
+    Title = "Select Halloween Boss",
+    Values = halloweenValues,
+    Default = "Todos",
+    Callback = function(selectedName)
+        if selectedName ~= "" then tabs.boss.HalloweenData.TargetBoss = selectedName end
+    end
+})
+
+tabs.boss:Dropdown({
+    Title = "Halloween Attack Speed",
+    Values = {"Max", "Fast", "Normal", "Slow"},
+    Default = "Fast",
+    Callback = function(selected)
+        if selected == "Max" then tabs.boss.HalloweenData.HitInterval = 0.01
+        elseif selected == "Fast" then tabs.boss.HalloweenData.HitInterval = 0.03
+        elseif selected == "Normal" then tabs.boss.HalloweenData.HitInterval = 0.06
+        elseif selected == "Slow" then tabs.boss.HalloweenData.HitInterval = 0.12 end
+    end
+})
+
+tabs.boss:Toggle({
+    Title = "Auto Farm Halloween Boss",
+    Default = false,
+    Callback = function(state)
+        tabs.boss.HalloweenData.Running = state
+        tabs.boss.HalloweenData.Generation = tabs.boss.HalloweenData.Generation + 1
+        local gen = tabs.boss.HalloweenData.Generation
+        
+        pcall(function()
+            if utils.remotes.ChangeSpeedSize then
+                local targetSize = state and 5 or 2
+                utils.remotes.ChangeSpeedSize:InvokeServer("changeSize", targetSize)
+            end
+        end)
+
+        if not state then
+            tabs.boss.StatusLabel:SetDesc("Inactive")
+            tabs.boss.BossLabel:SetDesc("None")
+            tabs.boss.HealthLabel:SetDesc("0 / 0")
+            return
+        end
+
+        task.spawn(function()
+            while utils.isCurrent() and tabs.boss.HalloweenData.Running and tabs.boss.HalloweenData.Generation == gen do
+                pcall(function()
+                    local model, bossName, health, maxHealth, hitbox = tabs.boss.findHalloweenBoss()
+                    if model and hitbox then
+                        tabs.boss.StatusLabel:SetDesc("Fighting Halloween Boss")
+                        tabs.boss.BossLabel:SetDesc(bossName)
+                        if health and maxHealth then
+                            tabs.boss.HealthLabel:SetDesc(formatNumberSilence(health) .. " / " .. formatNumberSilence(maxHealth))
+                        else
+                            tabs.boss.HealthLabel:SetDesc("Active")
+                        end
+                        hitbox.Size = Vector3.new(60, 120, 60)
+                        hitbox.Transparency = 1
+                        hitbox.CanCollide = false
+                        local char = lp.player.Character
+                        local hrp = char and char:FindFirstChild("HumanoidRootPart")
+                        local punch = char and char:FindFirstChild("Punch") or utils.playerData.Backpack:FindFirstChild("Punch")
+                        
+                        if hrp then
+                            if punch and punch.Parent ~= char then char.Humanoid:EquipTool(punch) end
+                            local alturaDinamica = (hitbox.Size.Y / 2) + 15
+                            hrp.CFrame = CFrame.lookAt(hitbox.Position + Vector3.new(0, alturaDinamica, 0), hitbox.Position)
+                            hrp.AssemblyLinearVelocity = Vector3.zero
+                            if utils.remotes.MuscleEvent then
+                                utils.remotes.MuscleEvent:FireServer("punch", "leftHand")
+                                utils.remotes.MuscleEvent:FireServer("punch", "rightHand")
+                            end
+                            if punch then punch:Activate() end
+                        end
+                    else
+                        tabs.boss.StatusLabel:SetDesc("Waiting Halloween Boss")
+                        tabs.boss.BossLabel:SetDesc("None")
+                        tabs.boss.HealthLabel:SetDesc("0 / 0")
+                    end
+                end)
+                task.wait(tabs.boss.HalloweenData.HitInterval)
+            end
+        end)
+    end
+})
+
+tabs.boss:Section({ Title = "REWARDS" })
+tabs.boss:Toggle({
+    Title = "Auto Open Chest",
+    Default = false,
+    Callback = function(state)
+        tabs.boss.ChestRunning = state
+        if state then
+            task.spawn(function()
+                while utils.isCurrent() and tabs.boss.ChestRunning do
+                    pcall(function()
+                        local char = lp.player.Character
+                        local hrp = char and char:FindFirstChild("HumanoidRootPart")
+                        if hrp and firetouchinterest then
+                            for _, part in ipairs(services.Workspace:GetDescendants()) do
+                                if part:IsA("BasePart") and part:FindFirstChild("TouchInterest") then
+                                    local pName = part.Parent and string.lower(part.Parent.Name) or ""
+                                    local cName = string.lower(part.Name)
+                                    if string.find(pName, "chest") or string.find(cName, "chest") or string.find(pName, "reward") then
+                                        firetouchinterest(hrp, part, 0)
+                                        firetouchinterest(hrp, part, 1)
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                    task.wait(1.5)
+                end
+            end)
+        end
+    end
+})
+
+pcall(function()
+    if utils.remotes.GuiDamageEvent then
+        utils.connect(utils.remotes.GuiDamageEvent.OnClientEvent, function(action, _, damage, targetModel, _)
+            if action == "bossPlayerDamageShow" and targetModel then
+                local isHalloweenBoss = tabs.boss.HalloweenData.HalloweenBosses[targetModel.Name]
+                if isHalloweenBoss or tabs.boss.NormalData.NormalBosses[targetModel.Name] then
+                    if damage then tabs.boss.HealthLabel:SetDesc("Last Damage: " .. formatNumberSilence(damage)) end
+                end
+            end
+        end)
+    end
+end)
+
+-- ==========================================
+-- TAB: COMBAT / PVP
+-- ==========================================
+tabs.clips:Section({ Title = "AUTO KILL" })
+local killConfig = { autoKill = false, targetMode = false, targetPlayer = nil }
+
+tabs.clips:Toggle({ Title = "Auto Kill", Default = false, Callback = function(state) killConfig.autoKill = state end })
+
+local playerDropdownValues = {"Ninguno"}
+local targetDropdown = tabs.clips:Dropdown({
+    Title = "Select Target",
+    Values = playerDropdownValues,
+    Default = "Ninguno",
+    Callback = function(selectedName)
+        if selectedName == "Ninguno" or selectedName == "" then
+            killConfig.targetMode = false
+            killConfig.targetPlayer = nil
+        else
+            killConfig.targetPlayer = selectedName
+            killConfig.targetMode = true
+        end
+    end
+})
+
+local function refreshPlayers()
+    playerDropdownValues = {"Ninguno"}
+    local addedNames = {["Ninguno"] = true}
+    for _, player in ipairs(services.Players:GetPlayers()) do
+        if player ~= lp.player then
+            if not addedNames[player.Name] then
+                addedNames[player.Name] = true
+                table.insert(playerDropdownValues, player.Name)
+            end
+        end
+    end
+    pcall(function() targetDropdown:Refresh(playerDropdownValues) end)
+end
+
+tabs.clips:Button({ Title = "Refresh Players", Callback = function() refreshPlayers() end })
+refreshPlayers()
+utils.connect(services.Players.PlayerAdded, function(player) refreshPlayers() end)
+utils.connect(services.Players.PlayerRemoving, function(player) refreshPlayers() end)
+
+tabs.clips:Section({ Title = "AUTO PUNCH" })
+local clipsAutoPunchActive = false
+tabs.clips:Toggle({
+    Title = "Auto Punch",
+    Default = false,
+    Callback = function(state)
+        clipsAutoPunchActive = state
+        if state then
+            task.spawn(function()
+                while utils.isCurrent() and clipsAutoPunchActive do
+                    pcall(function()
+                        local backpack = utils.playerData.Backpack
+                        local character = lp.player.Character
+                        if backpack and character then
+                            for _, v in pairs(backpack:GetChildren()) do
+                                if v.Name == "Punch" and character:FindFirstChild("Humanoid") then
+                                    character.Humanoid:EquipTool(v)
+                                end
+                            end
+                        end
+                        if utils.remotes.MuscleEvent then
+                            utils.remotes.MuscleEvent:FireServer("punch", "leftHand")
+                            utils.remotes.MuscleEvent:FireServer("punch", "rightHand")
+                        end
+                    end)
+                    task.wait(0.05)
+                end
+            end)
+        end
+    end
+})
+
+task.spawn(function()
+    while utils.isCurrent() do
+        task.wait(0.05)
+        if killConfig.autoKill then
+            local targetToKill = nil
+            if killConfig.targetMode and killConfig.targetPlayer then
+                local target = services.Players:FindFirstChild(killConfig.targetPlayer)
+                if target and target.Character then targetToKill = target.Character end
+            else
+                local localChar = lp.player.Character
+                local shortestDistance = math.huge
+                if localChar and localChar:FindFirstChild("HumanoidRootPart") then
+                    for _, player in ipairs(services.Players:GetPlayers()) do
+                        if player ~= lp.player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                            local distance = (localChar.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude
+                            if distance < shortestDistance then
+                                shortestDistance = distance
+                                targetToKill = player.Character
+                            end
+                        end
+                    end
+                end
+            end
+            local localCharacter = lp.player.Character
+            if targetToKill and targetToKill:FindFirstChild("HumanoidRootPart") and localCharacter and localCharacter:FindFirstChild("HumanoidRootPart") then
+                local targetPosition = targetToKill.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
+                localCharacter:PivotTo(targetPosition)
+                localCharacter.HumanoidRootPart.AssemblyLinearVelocity = Vector3.zero
+                if utils.remotes.MuscleEvent then
+                    utils.remotes.MuscleEvent:FireServer("punch", "rightHand")
+                    utils.remotes.MuscleEvent:FireServer("punch", "leftHand")
+                end
+            end
+        end
+    end
+end)
+
+-- ==========================================
+-- TAB: QUESTS & EXTRAS
+-- ==========================================
+tabs.misiones:Section({ Title = "QUESTS" })
+tabs.misiones.AutoQuestActive = false
+tabs.misiones:Toggle({
+    Title = "Auto Collect Quests",
+    Default = false,
+    Callback = function(state)
+        tabs.misiones.AutoQuestActive = state
+        if state then
+            task.spawn(function()
+                local function processQuestsContainer(container)
+                    for _, child in ipairs(container:GetChildren()) do
+                        if child.Name ~= "completedQuests" then
+                            if child:IsA("Folder") or child:IsA("Model") then
+                                processQuestsContainer(child)
+                            else
+                                pcall(function()
+                                    local questsEvent = services.ReplicatedStorage:WaitForChild("rEvents"):WaitForChild("questsEvent")
+                                    local parentName = container.Name
+                                    local grandParentName = container.Parent and container.Parent.Name or ""
+                                    if parentName == "Enchant Quests" or grandParentName == "Enchant Quests" then
+                                        questsEvent:FireServer("collectEnchantQuest", child)
+                                        questsEvent:FireServer("collectEnchantQuest", child.Name)
+                                    elseif parentName == "Daily Quests" or grandParentName == "Daily Quests" then
+                                        questsEvent:FireServer("collectDailyQuest", child)
+                                        questsEvent:FireServer("collectDailyQuest", child.Name)
+                                        questsEvent:FireServer("collectQuest", child)
+                                        questsEvent:FireServer("collectQuest", child.Name)
+                                    else
+                                        questsEvent:FireServer("collectQuest", child)
+                                        questsEvent:FireServer("collectQuest", child.Name)
+                                    end
+                                end)
+                            end
+                        end
+                    end
+                end
+                while tabs.misiones.AutoQuestActive and utils.isCurrent() do
+                    pcall(function()
+                        local questsFolder = lp.player:FindFirstChild("Quests")
+                        if questsFolder then
+                            processQuestsContainer(questsFolder)
+                        else
+                            for _, folder in pairs(lp.player:GetChildren()) do
+                                if folder:IsA("Folder") and string.find(string.lower(folder.Name), "quest") then
+                                    processQuestsContainer(folder)
+                                end
+                            end
+                        end
+                        if getnilinstances then
+                            for _, obj in ipairs(getnilinstances()) do
+                                pcall(function()
+                                    local parent = obj.Parent
+                                    local parentName = parent and parent.Name or ""
+                                    if parentName == "Daily Quests" or parentName == "Enchant Quests" or parentName == "Quests" or obj.Name == "Mighty Fists" or obj.Name == "Rep Sensei" or obj.Name == "Rebirth Wizard" then
+                                        local questsEvent = services.ReplicatedStorage:WaitForChild("rEvents"):WaitForChild("questsEvent")
+                                        questsEvent:FireServer("collectQuest", obj)
+                                        questsEvent:FireServer("collectDailyQuest", obj)
+                                        questsEvent:FireServer("collectEnchantQuest", obj)
+                                    end
+                                end)
+                            end
+                        end
+                    end)
+                    task.wait(1.5)
+                end
+            end)
+        end
+    end
+})
+
+tabs.misiones:Section({ Title = "PROTEIN EGGS" })
+tabs.misiones.eggsowned = tabs.misiones:Paragraph({ Title = "Protein Eggs", Content = "0" })
+tabs.misiones.autoEgg = false
+
+task.spawn(function()
+    while true do
+        local count = 0
+        local bp = lp.player:FindFirstChild("Backpack")
+        if bp then
+            for _, item in ipairs(bp:GetChildren()) do
+                if item.Name == "Protein Egg" then count = count + 1 end
+            end
+        end
+        tabs.misiones.eggsowned:SetDesc(tostring(count))
+        task.wait(2)
+    end
+end)
+
+tabs.misiones:Toggle({ Title = "Auto Eat Eggs", Default = false, Callback = function(state) tabs.misiones.autoEgg = state end })
+task.spawn(function()
+    while utils.isCurrent() do
+        if tabs.misiones.autoEgg then
+            pcall(function()
+                local char = lp.player.Character
+                local bp = lp.player:FindFirstChild("Backpack")
+                local tool = (char and char:FindFirstChild("Protein Egg")) or (bp and bp:FindFirstChild("Protein Egg"))
+                if tool then for _ = 1, 5 do utils.remotes.MuscleEvent:FireServer("proteinEgg", tool) end end
+            end)
+            task.wait(1)
+        else
+            task.wait(1)
+        end
+    end
+end)
+
+tabs.misiones:Section({ Title = "FORTUNE WHEEL" })
+tabs.misiones:Toggle({
+    Title = "Auto Spin Wheel",
+    Default = false,
+    Callback = function(bool)
+        _G.AutoSpinWheel = bool
+        if bool then
+            task.spawn(function()
+                local rspin = services.ReplicatedStorage.rEvents.openFortuneWheelRemote
+                local chances = services.ReplicatedStorage.shared.catalogs.fortuneWheelChances["Fortune Wheel"]
+                while _G.AutoSpinWheel and utils.isCurrent() do
+                    pcall(function() rspin:InvokeServer("openFortuneWheel", chances) end)
+                    task.wait(1)
+                end
+            end)
+        end
+    end
+})
+
+-- ==========================================
+-- TAB: UTILITIES
+-- ==========================================
+tabs.other:Section({ Title = "PERFORMANCE" })
+tabs.other:Toggle({
+    Title = "Hide Pets",
+    Default = true,
+    Callback = function(state)
+        services.ReplicatedStorage.rEvents:WaitForChild("showPetsEvent"):FireServer(state and "hidePets" or "showPets")
+    end
+})
+
+tabs.other:Button({
+    Title = "Anti Lag",
+    Callback = function()
+        pcall(function()
+            for _, gui in pairs(lp.player:WaitForChild("PlayerGui"):GetChildren()) do
+                if gui:IsA("ScreenGui") then gui:Destroy() end
+            end
+            for _, v in pairs(services.Lighting:GetChildren()) do
+                if v:IsA("Sky") or v:IsA("Atmosphere") then v:Destroy() end
+            end
+            services.Lighting.Brightness = 0
+            services.Lighting.GlobalShadows = false
+            workspace.Terrain.WaterTransparency = 1
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj:IsA("ParticleEmitter") or obj:IsA("PointLight") or obj:IsA("SpotLight") then
+                    obj:Destroy()
+                elseif obj:IsA("BasePart") then
+                    obj.Material = Enum.Material.SmoothPlastic
+                    obj.Reflectance = 0
+                end
+            end
+        end)
+    end
+})
+
+tabs.other:Section({ Title = "PRIVACY" })
+tabs.other:Toggle({ Title = "Hide Name", Default = true, Callback = function(state) privacyRedactor:SetNameEnabled(state) end })
+tabs.other:Toggle({ Title = "Hide UI Stats", Default = false, Callback = function(state) privacyRedactor:SetStatsEnabled(state) end })
+
+tabs.other:Section({ Title = "TELEPORTS" })
+tabs.other:Button({ Title = "Industrial Lift", Callback = function() utils.tpE(Vector3.new(-5491.68945, 81.2379913, 4643.85791)) end })
+tabs.other:Button({ Title = "Industrial Squat", Callback = function() utils.tpE(Vector3.new(-5217.25049, 89.8445511, 5416.01025)) end })
+tabs.other:Button({ Title = "Halloween Lift", Callback = function() utils.tpE(Vector3.new(5738, 86, 6415)) end })
+tabs.other:Button({ Title = "Halloween Squat", Callback = function() utils.tpE(Vector3.new(4813, 85, 5840)) end })
+
+-- ==========================================
+-- TAB: INFO
+-- ==========================================
+tabs.info:Section({ Title = "CREDITS" })
+tabs.info:Paragraph({ Title = "Author", Content = "Proyectados Hub V2 - By Horarybrech" })
+tabs.info:Paragraph({ Title = "Game", Content = "Muscle Legends (Adapted to WindUI)" })
