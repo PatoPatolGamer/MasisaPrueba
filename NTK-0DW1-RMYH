@@ -605,14 +605,15 @@ tabs.fullFarm.lastControlDurability = tabs.fullFarm.durability.Value
 tabs.fullFarm.stalledIntervals = 0
 tabs.fullFarm.lastLoopAt = os.clock()
 
-tabs.fullFarm.Status = tabs.fullFarm:Paragraph({ Title = "Status", Content = "Inactive" })
-tabs.fullFarm.Runtime = tabs.fullFarm:Paragraph({ Title = "Runtime", Content = "0d 0h 0m 0s" })
-tabs.fullFarm.StrengthStats = tabs.fullFarm:Paragraph({ Title = "Strength", Content = formatCurrentStat(tabs.fullFarm.strength.Value) .. " | Gained: 0" })
-tabs.fullFarm.DurabilityStats = tabs.fullFarm:Paragraph({ Title = "Durability", Content = formatCurrentStat(tabs.fullFarm.durability.Value) .. " | Gained: 0" })
-tabs.fullFarm.StrengthPace = tabs.fullFarm:Paragraph({ Title = "Str Pace", Content = "--/s | --/min | --/h | --/d | --/w" })
-tabs.fullFarm.DurabilityPace = tabs.fullFarm:Paragraph({ Title = "Dura Pace", Content = "--/s | --/min | --/h | --/d | --/w" })
-tabs.fullFarm.StrengthAverage = tabs.fullFarm:Paragraph({ Title = "Str Ø", Content = "--/s | --/min | --/h | --/d | --/w" })
-tabs.fullFarm.DurabilityAverage = tabs.fullFarm:Paragraph({ Title = "Dura Ø", Content = "--/s | --/min | --/h | --/d | --/w" })
+-- Corregido: Uso de Desc en lugar de Content para WindUI
+tabs.fullFarm.Status = tabs.fullFarm:Paragraph({ Title = "Status", Desc = "Inactive" })
+tabs.fullFarm.Runtime = tabs.fullFarm:Paragraph({ Title = "Runtime", Desc = "0d 0h 0m 0s" })
+tabs.fullFarm.StrengthStats = tabs.fullFarm:Paragraph({ Title = "Strength", Desc = formatCurrentStat(tabs.fullFarm.strength.Value) .. " | Gained: 0" })
+tabs.fullFarm.DurabilityStats = tabs.fullFarm:Paragraph({ Title = "Durability", Desc = formatCurrentStat(tabs.fullFarm.durability.Value) .. " | Gained: 0" })
+tabs.fullFarm.StrengthPace = tabs.fullFarm:Paragraph({ Title = "Str Pace", Desc = "--/s | --/min | --/h | --/d | --/w" })
+tabs.fullFarm.DurabilityPace = tabs.fullFarm:Paragraph({ Title = "Dura Pace", Desc = "--/s | --/min | --/h | --/d | --/w" })
+tabs.fullFarm.StrengthAverage = tabs.fullFarm:Paragraph({ Title = "Str Ø", Desc = "--/s | --/min | --/h | --/d | --/w" })
+tabs.fullFarm.DurabilityAverage = tabs.fullFarm:Paragraph({ Title = "Dura Ø", Desc = "--/s | --/min | --/h | --/d | --/w" })
 
 tabs.fullFarm.updateRuntime = function()
     tabs.fullFarm.elapsed = tabs.fullFarm.totalElapsed
@@ -808,12 +809,12 @@ tabs.fullRebirth:Toggle({ Title = "Phase 2: Packs", Default = true, Callback = f
 tabs.fullRebirth:Toggle({ Title = "Phase 3: Golems", Default = true, Callback = function(state) tabs.fullRebirth.FastRebirthV2Data.UseGolems = state end })
 
 tabs.fullRebirth:Section({ Title = "STATUS" })
-tabs.fullRebirth.FastRebirthV2Status = tabs.fullRebirth:Paragraph({ Title = "Status", Content = "Inactive" })
-tabs.fullRebirth.FastRebirthV2Stats = tabs.fullRebirth:Paragraph({ Title = "Rebirths", Content = "0 | Gained: 0" })
-tabs.fullRebirth.FastRebirthV2Speed = tabs.fullRebirth:Paragraph({ Title = "Speed", Content = "--/min" })
-tabs.fullRebirth.MissingLabel = tabs.fullRebirth:Paragraph({ Title = "Missing Rebirths", Content = "0" })
-tabs.fullRebirth.AvgTimeLabel = tabs.fullRebirth:Paragraph({ Title = "Pace", Content = "Calculating..." })
-tabs.fullRebirth.EtaLabel = tabs.fullRebirth:Paragraph({ Title = "ETA", Content = "0d 0h 0m 0s" })
+tabs.fullRebirth.FastRebirthV2Status = tabs.fullRebirth:Paragraph({ Title = "Status", Desc = "Inactive" })
+tabs.fullRebirth.FastRebirthV2Stats = tabs.fullRebirth:Paragraph({ Title = "Rebirths", Desc = "0 | Gained: 0" })
+tabs.fullRebirth.FastRebirthV2Speed = tabs.fullRebirth:Paragraph({ Title = "Speed", Desc = "--/min" })
+tabs.fullRebirth.MissingLabel = tabs.fullRebirth:Paragraph({ Title = "Missing Rebirths", Desc = "0" })
+tabs.fullRebirth.AvgTimeLabel = tabs.fullRebirth:Paragraph({ Title = "Pace", Desc = "Calculating..." })
+tabs.fullRebirth.EtaLabel = tabs.fullRebirth:Paragraph({ Title = "ETA", Desc = "0d 0h 0m 0s" })
 
 tabs.fullRebirth.updateRebirthStats = function()
     local currentCount = tabs.fullRebirth.FastRebirthV2Data.Rebirths.Value
@@ -1173,9 +1174,9 @@ tabs.boss.HalloweenData = {
 local halloweenBossNames = {"Frankenbrute", "Scarecrow Colossus", "Grim Reaper", "Pumpkin Titan"}
 
 tabs.boss:Section({ Title = "GENERAL STATUS" })
-tabs.boss.StatusLabel = tabs.boss:Paragraph({ Title = "Status", Content = "Inactive" })
-tabs.boss.BossLabel = tabs.boss:Paragraph({ Title = "Boss", Content = "None" })
-tabs.boss.HealthLabel = tabs.boss:Paragraph({ Title = "Health", Content = "0 / 0" })
+tabs.boss.StatusLabel = tabs.boss:Paragraph({ Title = "Status", Desc = "Inactive" })
+tabs.boss.BossLabel = tabs.boss:Paragraph({ Title = "Boss", Desc = "None" })
+tabs.boss.HealthLabel = tabs.boss:Paragraph({ Title = "Health", Desc = "0 / 0" })
 
 tabs.boss.getBossData = function(bossModel)
     local stats = bossModel:FindFirstChild("stats")
@@ -1652,7 +1653,7 @@ tabs.misiones:Toggle({
 })
 
 tabs.misiones:Section({ Title = "PROTEIN EGGS" })
-tabs.misiones.eggsowned = tabs.misiones:Paragraph({ Title = "Protein Eggs", Content = "0" })
+tabs.misiones.eggsowned = tabs.misiones:Paragraph({ Title = "Protein Eggs", Desc = "0" })
 tabs.misiones.autoEgg = false
 
 task.spawn(function()
@@ -1756,5 +1757,5 @@ tabs.other:Button({ Title = "Halloween Squat", Callback = function() utils.tpE(V
 -- TAB: INFO
 -- ==========================================
 tabs.info:Section({ Title = "CREDITS" })
-tabs.info:Paragraph({ Title = "Author", Content = "Proyectados Hub V2 - By Horarybrech" })
-tabs.info:Paragraph({ Title = "Game", Content = "Muscle Legends (Adapted to WindUI)" })
+tabs.info:Paragraph({ Title = "Author", Desc = "Proyectados Hub V2 - By Horarybrech" })
+tabs.info:Paragraph({ Title = "Game", Desc = "Muscle Legends (Adapted to WindUI)" })
