@@ -400,7 +400,7 @@ end
 -- ==========================================
 -- INICIALIZACIÓN DE INTERFAZ
 -- ==========================================
-utils.library = loadstring(game:HttpGet("https://raw.githubusercontent.com/horarybrech/Hub/refs/heads/main/ProyectadosUiV2?cache=" .. tostring(os.time()), true))()
+utils.library = loadstring(game:HttpGet("https://raw.githubusercontent.com/horarybrech/Hub/refs/heads/main/ProyectadosUiV2.luau?cache=" .. tostring(os.time()), true))()
 utils.ProyectadosHub = utils.library:AddWindow("Proyectados Hub | Muscle Legends", {
     main_color = Color3.fromRGB(138, 43, 226),
     min_size = Vector2.new(700, 700),
